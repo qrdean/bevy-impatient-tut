@@ -29,7 +29,12 @@
             buildInputs =
               [
                 # Rust dependencies
-                (rust-bin.stable.latest.default.override { extensions = [ "rust-src" ]; })
+                (rust-bin.stable.latest.default.override { 
+                  extensions = [
+                    "rust-src" 
+                    "rust-analyzer"
+                  ]; 
+                })
                 pkg-config
               ]
               ++ lib.optionals (lib.strings.hasInfix "linux" system) [
