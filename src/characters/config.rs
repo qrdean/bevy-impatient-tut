@@ -17,7 +17,7 @@ pub struct AnimationDefinition {
     pub directional: bool,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Component, Debug, Clone, Serialize, Deserialize)]
 pub struct CharacterEntry {
     pub name: String,
     pub max_health: f32,
