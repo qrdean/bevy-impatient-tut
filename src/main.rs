@@ -1,6 +1,9 @@
-mod map;
 mod characters;
+mod map;
 mod player;
+mod state;
+mod collision;
+mod collision;
 
 use bevy::{
     prelude::*,
@@ -34,6 +37,8 @@ fn main() {
                 .set(ImagePlugin::default_nearest()),
         )
         .add_plugins(ProcGenSimplePlugin::<Cartesian3D, Sprite>::default())
+        .add_plugins(state::StatePlugin)
+        .add_plugins(collision::CollisionPlugin)
         .add_plugins(characters::CharactersPlugin)
         .add_systems(Startup, (setup_camera, setup_generator))
         // .add_plugins(PlayerPlugin)

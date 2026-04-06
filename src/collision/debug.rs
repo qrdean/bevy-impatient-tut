@@ -1,0 +1,78 @@
+use super::map::CollisionMap;
+use crate::characters::input::Player;
+use bevy::{ecs::error::debug, prelude::*};
+// use crate::characters::collider::Collider;
+//
+
+#[derive(Resource, Default)]
+pub struct DebugCollisionEnabled(pub bool);
+
+pub fn toggle_debug_collision(
+    keyboard: Res<ButtonInput<KeyCode>>,
+    mut debug_enabled: ResMut<DebugCollisionEnabled>,
+) {
+    if keyboard.just_pressed(KeyCode::F3) {
+        debug_enabled.0 = !debug_enabled.0;
+        if debug_enabled.0 {
+            info!("collision debug enabled");
+        } else {
+            info!("collision debug disabled");
+        }
+    }
+}
+
+pub fn debug_draw_collision(
+    map: Option<Res<CollisionMap>>,
+    debug_enabled: Res<DebugCollisionEnabled>,
+    mut gizmos: Gizmos,
+) {
+    if !debug_enabled.0 {
+        return;
+    }
+
+    let Some(map) = map else {
+        return;
+    };
+
+    let tile_size = map.tile_size();
+    let origin = map.origin();
+
+    for y in 0..map.height() {
+        for x in 0..map.width() {
+            let world_pos = Vec2::new(
+                origin.x + (x as f32 + 0.5) * tile_size,
+                origin.y + (y as f32 + 0.5) * tile_size,
+            );
+
+            let color = if map.is_walkable(x, y) {
+                Color::srgba(0., 1., 0., 0.25)
+            } else {
+                Color::srgba(0., 1., 0., 0.25)
+            };
+
+            gizmos.rect_2d(world_pos, Vec2::splat(tile_size * 0.9), color);
+        }
+    }
+}
+
+// pub fn debug_player_position(
+//     player_query: Query<(&Transform, /* &Collider */), With<Player>>,
+//     map: Option<Res<CollisionMap>>,
+//     debug_enabled: Res<DebugCollisionEnabled>,
+//     mut gizmos: Gizmos,
+// ) {
+//     if !debug_enabled.0 {
+//         return;
+//     }
+//
+//     let Some(map) = map else {
+//         return;
+//     };
+//     let Ok((transform, /* collider */)) = player_query.single() else {
+//         return;
+//     };
+//
+//     let center = transform.translation.truncate();
+//
+//     let collider_pos = collider.world_position(transform);
+// }
