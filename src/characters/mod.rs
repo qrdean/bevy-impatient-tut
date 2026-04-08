@@ -5,6 +5,8 @@ pub mod input;
 pub mod physics;
 pub mod spawn;
 pub mod state;
+pub mod collider;
+mod rendering;
 
 use crate::state::GameState;
 
@@ -25,8 +27,11 @@ impl Plugin for CharactersPlugin {
                     input::handle_player_input,
                     spawn::switch_character,
                     input::update_jump_state,
+
                     animation::on_state_change_update_animation,
+                    collider::validate_movement,
                     physics::apply_velocity,
+                    rendering::update_player_depth,
                     animation::animations_playback,
                 )
                     .chain()

@@ -3,7 +3,7 @@ mod map;
 mod player;
 mod state;
 mod collision;
-mod collision;
+mod config;
 
 use bevy::{
     prelude::*,
